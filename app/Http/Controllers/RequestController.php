@@ -2,60 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Requests;
-use View;
+use App\Http\Controllers\HomeController;
 use Auth;
 use DB;
+use Request;
 
 class RequestController extends Controller
 {
 
-/**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showSentRequests()
-    {
-        $id = Auth::id();
-        $sentRequests = DB::table('requests')->leftJoin('users', 'users.id', '=', 'requests.user_id')->select('users.id', 'users.name', 'users.email')->where('users.id', '!=', $id)->where('connect', '=', 0)->get();
+    public function showSent() {
+        $sentRequests = $this->getSentRequests();
 
         return view('home',compact('sentRequests'));
     }
 
-    public function showReceivedRequests()
-    {
-        $id = Auth::id();
-        $receivedRequests = DB::table('requests')->join('users', 'requests.user_id', '=', 'users.id', 'right outer')->select('users.id', 'users.name', 'users.email')->where('users.id', '!=', $id)->where('connect', '=', 0)->get();
-
-        return view('home',compact('receivedRequests'));
-    }
-
-    public function store($request) {
-        $id = Auth::id();
-        // dd($request, $id);
-        $request = Requests::table('requests')->create([
-            'user_id' => $id,
-            'user_request_id' => $request->request_id,
+    public function store($id) {
+        $requestSent = DB::table('requests')->insert([
+            'user_id' => Auth::id(),
+            'user_request_id' => $id,
             'connected' => 0,  // Bolean variable. 0 for not connected and 1 for connected.
         ]);
+
+        return (new HomeController)->index();
+    }
+
+    public function getSentRequests() {
+        // MANAGING SENT REQUESTS
+        // I took the users that sent me a request. Excluding also my own user id.
+        $id = Auth::id();
         
-        return view('home',compact('request'));
+        $ids = DB::table('requests')->where('connected', '=', '0')->select('requests.user_id')->get();
+        $sentRequests = DB::table('users')->whereIn('user.id', [$ids])->where('id', '!=', $id)->get();
+
+        return $sentRequests;
     }
 
-    // This method will accept the request.
-    public function update($id_request) {
-        $id = Auth::id();
-        $request = Requests::table('requests')->where('user_id', '=', $id)->where('user_id_request', '=', $id_request)->first()->update(['connect' => 1]);
 
-        return view('home',compact('request'));
-    }
-
-    public function destroy($id_request) {
-        $id = Auth::id();
-        $request = Requests::table('requests')->where('user_id', '=', $id)->where('user_id_request', '=', $id_request)->first()->delete();
-
-        return view('home');
-    }
 }

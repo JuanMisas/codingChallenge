@@ -3,9 +3,10 @@
     <div class="card shadow  text-white bg-dark">
       <div class="card-header">Coding Challenge - Network connections</div>
       <div class="card-body">
+      <input type="hidden" name="_token" value="{{ csrf_token() }}" />
         <div class="btn-group w-100 mb-3" role="group" aria-label="Basic radio toggle button group">
           <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-          <label class="btn btn-outline-primary" for="btnradio1" id="get_suggestions_btn">Suggestions ()</label>
+          <label class="btn btn-outline-primary" for="btnradio1" id="get_suggestions_btn">Suggestions ({{ isset($suggestions) ? count($suggestions) : 0 }})</label>
 
           <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
           <label class="btn btn-outline-primary" for="btnradio2" id="get_sent_requests_btn">Sent Requests ()</label>
@@ -21,15 +22,15 @@
         <div id="content">
           {{-- Display data here --}}
           <div class='container' id='suggestions' hidden> 
-            @foreach($suggestions as $suggestion)
+          @foreach($suggestions as $suggestion)
               <x-suggestion :suggestion="$suggestion" />
             @endforeach
           </div>
           <div class='container' id='sent' hidden>
-            <x-request :mode="sent"/>
+            <x-request :mode="'sent'"/>
           </div>
           <div class='container' id='received' hidden>
-            <x-request :mode="received"/>
+            <x-request :mode="'received'"/>
           </div>
           <div class='container' id='connections' hidden>
             <x-connection />
@@ -47,7 +48,6 @@
           @endfor
         </div>
 
-        <span class="fw-bold">"Load more"-Button</span>
         <div class="d-flex justify-content-center mt-2 py-3 {{-- d-none --}}" id="load_more_btn_parent">
           <button class="btn btn-primary" onclick="" id="load_more_btn">Load more</button>
         </div>
@@ -60,6 +60,6 @@
 
 <div id="connections_in_common_skeleton" class="{{-- d-none --}}">
   <br>
-  <span class="fw-bold text-white">Loading Skeletons</span>
+
   
 </div>

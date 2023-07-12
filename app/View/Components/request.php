@@ -6,15 +6,14 @@ use Illuminate\View\Component;
 
 class request extends Component
 {
-    public $request;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct()
     {
-        $this->request = $request;
+        //
     }
 
     /**

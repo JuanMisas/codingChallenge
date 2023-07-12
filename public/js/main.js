@@ -5,33 +5,22 @@ var takeAmount = 10;
 
 
 function getRequests(mode) {
-    // your code here...
     switch (mode) {
         case 'sent':
             $.ajax({
-                    url: 'sentRequests',
+                    url: '/getSentRequests',
                     type: 'GET',
                 })
                 .done(function(data) {
                     $("#skeleton").prop("hidden", true);
-                    $("#received").prop("hidden", false);
+                    $("#sent").prop("hidden", false);
                 })
                 .fail(function() {
                     console.log('Failed');
                 });
             break;
         case 'received':
-            $.ajax({
-                    url: 'receivedRequests',
-                    type: 'GET',
-                })
-                .done(function(data) {
-                    $("#skeleton").prop("hidden", true);
-                    $("#received").prop("hidden", false);
-                })
-                .fail(function() {
-                    console.log('Failed');
-                });
+
             break;
     }
 }
@@ -42,17 +31,7 @@ function getMoreRequests(mode) {
 }
 
 function getConnections() {
-    $.ajax({
-            url: '/connections',
-            type: 'GET',
-        })
-        .done(function(data) {
-            $("#skeleton").prop("hidden", true);
-            $("#connections").prop("hidden", false);
-        })
-        .fail(function() {
-            console.log('Failed');
-        });
+    // your code here...
 }
 
 function getMoreConnections() {
@@ -61,17 +40,7 @@ function getMoreConnections() {
 }
 
 function getConnectionsInCommon(userId, connectionId) {
-    $.ajax({
-            url: '/connectionsInCommon',
-            type: 'GET',
-        })
-        .done(function(data) {
-            $("#skeleton").prop("hidden", true);
-            $("#connections").prop("hidden", false);
-        })
-        .fail(function() {
-            console.log('Failed');
-        });
+    // your code here...
 }
 
 function getMoreConnectionsInCommon(userId, connectionId) {
@@ -81,7 +50,7 @@ function getMoreConnectionsInCommon(userId, connectionId) {
 
 function getSuggestions() {
     $.ajax({
-            url: '/suggestion',
+            url: '/getSuggestions',
             type: 'GET',
         })
         .done(function(data) {
@@ -98,74 +67,38 @@ function getMoreSuggestions() {
     // your code here...
 }
 
-function sendRequest(userId, suggestionId) {
-    $.ajax({
-            type: 'POST',
-            url: '/sendRequest/',
-            data: suggestionId,
-        })
-        .done(function(data) {
-            $("#skeleton").prop("hidden", true);
-            $("#suggestions").prop("hidden", false);
-        })
-        .fail(function() {
-            console.log('Failed');
-        });
+function sendRequest(suggestionId) {
+    $("#value_create_request").val(suggestionId);
+    $("#form_create_request_" + suggestionId).submit();
 }
 
 function deleteRequest(userId, requestId) {
-    $.ajax({
-            type: 'DELETE',
-            url: '/deleteRequest/',
-            data: requestId,
-        })
-        .done(function(data) {
-            $("#skeleton").prop("hidden", true);
-            $("#sent").prop("hidden", false);
-        })
-        .fail(function() {
-            console.log('Failed');
-        });
+    // your code here...
 }
 
 function acceptRequest(userId, requestId) {
-    $.ajax({
-            type: 'PUT',
-            url: '/acceptRequest/' + requestId + '/',
-            data: requestId,
-        })
-        .done(function(data) {
-            $("#skeleton").prop("hidden", true);
-            $("#received").prop("hidden", false);
-        })
-        .fail(function() {
-            console.log('Failed');
-        });
+    // your code here...
 }
 
 function removeConnection(userId, connectionId) {
-    $.ajax({
-            type: 'PUT',
-            url: '/removeConnection/' + connectionId + '/',
-            data: connectionId,
-        })
-        .done(function(data) {
-            $("#skeleton").prop("hidden", true);
-            $("#connections").prop("hidden", false);
-        })
-        .fail(function() {
-            console.log('Failed');
-        });
+    // your code here...
 }
 
 $(function() {
-
     // Doc.Ready function (at the start)
     $("#suggestions").prop("hidden", true);
     $("#sent").prop("hidden", true);
     $("#received").prop("hidden", true);
     $("#connections").prop("hidden", true);
     getSuggestions();
+
+
+
+
+    $('#create_request_btn_').on('click', function(e) {
+        sendRequest();
+    });
+
 
 
     // Show containers depending on corresponding button.
@@ -183,7 +116,7 @@ $(function() {
         $("#received").prop("hidden", true);
         $("#connections").prop("hidden", true);
         $("#skeleton").prop("hidden", false);
-        getRequests();
+        getRequests('sent');
     });
     $('#btnradio3').on('click', function(e) {
         $("#suggestions").prop("hidden", true);

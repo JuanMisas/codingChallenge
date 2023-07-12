@@ -2,10 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuggestionController;
+use App\Http\Controllers\RequestController;
 
 
 
-Route::get("/suggestion", [SuggestionController::class, "show"]);
+Route::get("/getSuggestions", [SuggestionController::class, "show"]);
+Route::post('/sendRequest/{id}', [RequestController::class, "store"])->name('request.store');
+Route::get("/getSentRequests", [RequestController::class, "showSent"]);
+
+// Route::post('/sendRequest', 'RequestController@store')->name('request.store');
+// Route::post('/sendRequest', [RequestController::class, "store"]);
 // Route::get("/sentRequests", [RequestController::class, "showSentRequests"]);
 // Route::get("/receivedRequests", [RequestController::class, "showReceivedRequests"]);
 // Route::get("/connections", [ConnectionController::class, "showConnections"]);
@@ -15,8 +21,10 @@ Route::get("/suggestion", [SuggestionController::class, "show"]);
 // Route::put("/acceptRequest/{id}", [RequestController::class, "update"]);
 // Route::delete("/deleteConnection/{id}", [RequestController::class, "destroyConnection"]);
 
+// Route::resource('requests', RequestController::class);
 
-Route::resource("requests", "Requestcontroller");
+
+// Route::resource("requests", "Requestcontroller");
 
 // Route::get('suggestion', function () {
 
