@@ -92,9 +92,6 @@ $(function() {
     $("#connections").prop("hidden", true);
     getSuggestions();
 
-
-
-
     $('#create_request_btn_').on('click', function(e) {
         sendRequest();
     });
