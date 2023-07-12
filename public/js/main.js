@@ -99,8 +99,6 @@ $(function() {
         sendRequest();
     });
 
-
-
     // Show containers depending on corresponding button.
     $('#btnradio1').on('click', function(e) {
         $("#suggestions").prop("hidden", true);
